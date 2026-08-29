@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sekeron AI Intern Challenge - Demo Dashboard</title>
+    <!-- Google Fonts: Inter only as specified in sekeron.com -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: rgba(33, 33, 33, 0.8);
+            --card-border: 0.8px solid rgb(60, 60, 60);
+            --accent-primary: #ffffff;
+            --accent-secondary: #303030;
+            --text-main: #bdbdbd;
+            --text-muted: #9e9e9e;
+            --text-bright: #ffffff;
+            --text-dark: #000000;
+            --success-color: #52d6a4;
+            --success-bg: rgba(26, 46, 38, 0.8);
+            --success-border: 0.8px solid #287a5b;
+            --warning-color: #f7b243;
+            --warning-bg: rgba(46, 36, 22, 0.8);
+            --warning-border: 0.8px solid #7c571c;
+            --danger-color: #ff6b6b;
+            --danger-bg: rgba(46, 22, 22, 0.8);
+            --danger-border: 0.8px solid #7c1c1c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Sekeron Header Style */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .meta-info {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-main);
+            margin-bottom: 24px;
+        }
+
+        .meta-info span {
+            color: var(--text-bright);
+            font-weight: 600;
+        }
+
+        /* In Sekeron.com, buttons are pill-shaped (border-radius: 99px) */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            background: rgba(33, 33, 33, 0.4);
+            padding: 6px;
+            border-radius: 99px;
+            border: var(--card-border);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Active buttons are pure white with black text */
+        .tab-btn.active {
+            color: var(--text-dark);
+            background: var(--accent-primary);
+        }
+
+        /* Card elements styled like Sekeron cards (rgba(33,33,33,0.8), border radius 10px, border #3c3c3c) */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: var(--card-border);
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-bright);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        p.description {
+            color: var(--text-main);
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        /* Subtle Badges matching the tone */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: var(--success-border);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-bg);
+            color: var(--warning-color);
+            border: var(--warning-border);
+        }
+
+        /* Grid elements */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-box {
+            background: rgba(255, 255, 255, 0.01);
+            border: var(--card-border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-bright);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 6px;
+            position: relative;
+            padding-left: 18px;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        li::before {
+            content: '─';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        /* Tables styled in Sekeron.com format */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-bright);
+            font-weight: 600;
+            padding: 10px 12px;
+            font-size: 13px;
+            border-bottom: var(--card-border);
+        }
+
+        td {
+            padding: 10px 12px;
+            font-size: 13.5px;
+            color: var(--text-main);
+            border-bottom: 0.8px solid rgba(60, 60, 60, 0.3);
+        }
+
+        tr:hover td {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Re-ranking layouts */
+        .rerank-comparison {
+            display: flex;
+            align-items: stretch;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .rerank-comparison {
+                flex-direction: column;
+            }
+        }
+
+        .rank-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.01);
+            border: var(--card-border);
+            border-radius: 8px;
+            padding: 16px;
+            position: relative;
+        }
+
+        .rank-card.promoted {
+            border: 0.8px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .rank-num {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 24px;
+            font-weight: 800;
+            opacity: 0.3;
+            color: var(--text-bright);
+        }
+
+        .promoted .rank-num {
+            opacity: 0.8;
+            color: var(--text-bright);
+        }
+
+        .arrow-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-bright);
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .arrow-indicator {
+                transform: rotate(90deg);
+                margin: 8px 0;
+            }
+        }
+
+        .transition-explain {
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.8px dashed rgb(60, 60, 60);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        /* Weaknesses card */
+        .weakness-badge {
+            background-color: var(--danger-bg);
+            color: var(--danger-color);
+            border: var(--danger-border);
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: var(--text-bright);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sekeron AI Intern Challenge</h1>
+            <div class="meta-info">
+                Submission Demo Dashboard | Candidate: <span>Dharmesh Singhal</span>
+            </div>
+            
+            <!-- Tab Buttons (Sekeron.com Styling) -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab1')">1. Capability & Evidence</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab2')">2. Contextual Match</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab3')">3. Re-Ranking behavior</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab4')">4. System Weakness</button>
+            </div>
+        </header>
+
+        <!-- Tab 1: Capability Claim & Evidence -->
+        <div id="tab1" class="tab-content active">
+            <div class="card">
+                <h2><span>🔍</span> Artist Capability Claim & Empirical Evidence</h2>
+                <p class="description">
+                    Verified capability record for artist <span class="highlight">Meera Arjun (M01)</span>. The system distinguishes self-claimed profile bios from demonstrated capabilities by checking codec channels, aspect ratios, and durations in the portfolio media files.
+                </p>
+
+                <div class="grid-2">
+                    <div class="section-box">
+                        <h3>Self-Claimed Profile</h3>
+                        <ul>
+                            <li><strong>Roles claimed:</strong> Vocalist, Guitarist</li>
+                            <li><strong>Format:</strong> Acoustic Duo</li>
+                            <li><strong>Location:</strong> Delhi NCR, India</li>
+                            <li><strong>Bio details:</strong> Meera & Arjun is an acoustic duo based in Delhi NCR.</li>
+                        </ul>
+                    </div>
+                    <div class="section-box">
+                        <h3>Demonstrated Capabilities (Verified)</h3>
+                        <ul>
+                            <li><strong>Format:</strong> Duo (Two distinct voice & instrument layers present)</li>
+                            <li><strong>Sound Type:</strong> Acoustic (Acoustic guitar and clean vocals)</li>
+                            <li><strong>Genres:</strong> Acoustic Folk, Indie Pop</li>
+                            <li><strong>Skills:</strong> Live acoustic guitar, vocal harmony, duo synchronization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <h3>Technical Media Evidence (FFmpeg & Pillow Extraction)</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Source Media File</th>
+                                    <th>Type</th>
+                                    <th>Duration</th>
+                                    <th>Technical Metadata details (Verified signals)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="highlight">media\35860-408654164.mp4</td>
+                                    <td>Video</td>
+                                    <td>21.02s</td>
+                                    <td>Audio channels: 2 (stereo). Sample rate: 48kHz. Video: 1920x1080 (16:9 aspect).</td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">media\35863-408654169.mp4</td>
+                                    <td>Video</td>
+                                    <td>20.75s</td>
+                                    <td>Audio channels: 2 (stereo). Sample rate: 48kHz. Video: 1920x1080 (16:9 aspect).</td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">media\MA_cafe_demo_take1.wav</td>
+                                    <td>Audio</td>
+                                    <td>29.40s</td>
+                                    <td>Audio channels: 1 (mono). Sample rate: 44.1kHz. Cafe background signals.</td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">media\MA_upbeat_medley_rehearsal.wav</td>
+                                    <td>Audio</td>
+                                    <td>30.00s</td>
+                                    <td>Audio channels: 1 (mono). Sample rate: 44.1kHz. Live vocal & guitar layer.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="section-box">
+                        <h3>Confidence Score</h3>
+                        <div class="badge badge-success">High Confidence</div>
+                        <p style="margin-top: 8px; font-size: 13.5px; color: var(--text-muted);">
+                            All 6 claimed attributes match the provided media metadata properties. Distinct audio channels and video tracks verify the "Duo" format.
+                        </p>
+                    </div>
+                    <div class="section-box">
+                        <h3>Key Unknowns</h3>
+                        <ul>
+                            <li>Live performance stamina (long sets)</li>
+                            <li>Professional studio recording experience</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Contextual Recommendation -->
+        <div id="tab2" class="tab-content">
+            <div class="card">
+                <h2><span>🎯</span> Contextual Match: Brief 01 (Cafe Live Music)</h2>
+                <p class="description">
+                    The recommendation engine interprets sparse chats, parses constraints/assumptions, and matches artists using location, budget, and demonstrated formats.
+                </p>
+
+                <div class="grid-2">
+                    <div class="section-box">
+                        <h3>Hirer Intent Interpretation</h3>
+                        <ul>
+                            <li><strong>Explicit Constraints:</strong> Live music next Friday, Cafe venue, acoustic preference, budget 7k to 9k, no large stage space.</li>
+                            <li><strong>Reasonable Assumptions:</strong> Location is Delhi NCR, artist must bring basic amplification.</li>
+                            <li><strong>Important Unknowns:</strong> Exact size of performance area, café's sound system availability.</li>
+                        </ul>
+                    </div>
+                    <div class="section-box">
+                        <h3>Shortlist Recommendations</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Artist Name</th>
+                                        <th>Match Rationale</th>
+                                        <th>Budget Match</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="highlight">#1</td>
+                                        <td><strong>Raghav Sen (M03)</strong></td>
+                                        <td>Soloist. Minimal footprint, perfect for small cafe floor. Acoustic folk fits background volume constraint.</td>
+                                        <td><span class="badge badge-success">7k - 9k (Fits)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="highlight">#2</td>
+                                        <td><strong>Meera Arjun (M01)</strong></td>
+                                        <td>Acoustic duo. Richer sound, but requires slightly more floor space. Maximum budget limit.</td>
+                                        <td><span class="badge badge-success">9k (Limit)</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <h3>"Improve Your Matches" - Clarification Questions</h3>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">
+                        The system outputs these high-priority questions to resolve matching uncertainty:
+                    </p>
+                    <ul>
+                        <li><strong>Question 1:</strong> Can the café performance area accommodate a duo setup (2 artists + instruments) or is it strictly limited to a solo act footprint? <em>(Impact: Resolves spacing constraints to confirm Rank #2 Meera Arjun)</em>.</li>
+                        <li><strong>Question 2:</strong> Does the venue have an active PA system/mixer, or must the artist supply all sound equipment? <em>(Impact: Affects artist equipment check & budget margins)</em>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Re-Ranking Behavior -->
+        <div id="tab3" class="tab-content">
+            <div class="card">
+                <h2><span>⚡</span> Dynamic Match Re-Ranking</h2>
+                <p class="description">
+                    When client specifications change, the re-ranking module shifts weights dynamically. In this scenario, Brief 01 is upgraded to a <span class="highlight">Launch Night headline performance</span> with a budget increase to <span class="highlight">15k</span>.
+                </p>
+
+                <div class="section-box">
+                    <h3>Brief 01 Update Context</h3>
+                    <ul>
+                        <li>Launch night crowd (~80 guests) instead of simple background music.</li>
+                        <li>Proper 45-minute high-impact "headline set" required.</li>
+                        <li>Budget increased from 7k-9k to **15k**.</li>
+                        <li>Acoustic format still preferred but must create a "moment".</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 8px;">Ranking Transition Comparison</h3>
+                <div class="rerank-comparison">
+                    <div class="rank-card">
+                        <div class="rank-num">#1</div>
+                        <h3>Original Rank 1</h3>
+                        <p class="highlight" style="font-size: 16px; margin-bottom: 6px;">Raghav Sen (M03)</p>
+                        <p style="font-size: 13px; color: var(--text-muted);">
+                            Solo acoustic soloist. Excellent for 3 hours of background volume, but lacks energy to capture a headline launch moment.
+                        </p>
+                    </div>
+
+                    <div class="arrow-indicator">➔</div>
+
+                    <div class="rank-card promoted">
+                        <div class="rank-num">#1</div>
+                        <h3>Revised Rank 1 (Promoted)</h3>
+                        <p class="highlight" style="font-size: 16px; margin-bottom: 6px;">KillRush (M04)</p>
+                        <p style="font-size: 13px; color: var(--text-muted);">
+                            5-piece acoustic rock cover band. Energetic live performance videos verify capability to create a "moment" for 80 guests. Enabled by the 15k budget limit.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="transition-explain">
+                    <strong>Re-ranking Logic:</strong> Quiet soloists (Raghav Sen) are down-ranked because a launch night headline set requires stage energy. The 5-piece live act (**KillRush**) is promoted to #1 because the budget increase to 15k makes them affordable, whereas they were excluded in the initial 7k-9k budget search.
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: System Weakness -->
+        <div id="tab4" class="tab-content">
+            <div class="card">
+                <h2><span>⚠️</span> Evaluation & System Weakness</h2>
+                <p class="description">
+                    Every system has boundaries. By design, this system uses a lightweight, data-led technical verification strategy instead of expensive, heavy AI models.
+                </p>
+
+                <div class="grid-2">
+                    <div class="section-box">
+                        <div class="weakness-badge">Weakness 1: No Semantic Evaluation</div>
+                        <h3>Lack of Aesthetic Understanding</h3>
+                        <p style="font-size: 13.5px; color: var(--text-muted);">
+                            The system queries technical media properties (BPM, codecs, aspect ratios, durations) but cannot judge:
+                        </p>
+                        <ul style="margin-top: 8px; font-size: 13px;">
+                            <li>The emotional quality or pitch of a vocalist.</li>
+                            <li>The aesthetic composition or coloring quality of a photographer's images.</li>
+                            <li>The flow and story engagement of an editor's cuts.</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-box">
+                        <div class="weakness-badge" style="background-color:var(--warning-bg); color:var(--warning-color); border:var(--warning-border);">Degradation Example</div>
+                        <h3>Graceful Degradation: Raghav Sen (M03)</h3>
+                        <p style="font-size: 13.5px; color: var(--text-muted);">
+                            One of Raghav Sen's portfolio files (<code class="highlight">letting-go-342368.mp3</code>) is corrupted/only 1.6 seconds long.
+                        </p>
+                        <p style="margin-top: 8px; font-size: 13px; color: var(--text-muted);">
+                            <strong>System Action:</strong> Instead of crashing, the system detects this duration anomaly, automatically flags the confidence to <span class="highlight">Medium</span>, logs the file as a damaged upload, and lists it as an unknown in the capability profile.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Tab Switching Script -->
+    <script>
+        function switchTab(evt, tabId) {
+            // Hide all tab content
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            // Remove active class from all buttons
+            const tabBtns = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].classList.remove("active");
+            }
+
+            // Show selected tab content and add active class to button
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
