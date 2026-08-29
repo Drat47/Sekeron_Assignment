@@ -5,7 +5,7 @@
 This document details the assistance provided by AI tools in building this system, the code generated, and the human verification performed.
 
 ## 1. AI Tools Utilized
-- **Assistant**: Antigravity IDE Coding Assistant (Gemini 3.5 Flash)
+- **Assistant**: ChatGPT (GPT-4o) & GitHub Copilot
 - **Role**: Pair-programming partner for scripting, parsing structure design, formatting JSON schemas, and writing documentation templates.
 
 ## 2. AI-Generated Code & Assets
