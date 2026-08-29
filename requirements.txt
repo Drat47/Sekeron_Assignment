@@ -1,0 +1,4 @@
+requests
+pillow
+pypdf
+ffmpeg-python
